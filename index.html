@@ -12,7 +12,7 @@ body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: 
 .header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
 .header-left h1 { font-size: 28px; font-weight: 700; color: #111; letter-spacing: -0.02em; margin-bottom: 6px; }
 .header-left p { font-size: 15px; color: #777; line-height: 1.6; max-width: 560px; }
-.header-stats { display: flex; gap: 32px; margin-top: 28px; }
+.header-stats { display: flex; gap: 32px; margin-top: 28px; flex-wrap: wrap; }
 .hstat { }
 .hstat-val { font-size: 26px; font-weight: 700; color: #2563eb; letter-spacing: -0.02em; }
 .hstat-lbl { font-size: 12px; color: #999; font-weight: 500; margin-top: 2px; }
@@ -122,16 +122,42 @@ body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: 
 .metric-val.green { color: #059669; }
 .metric-val.blue  { color: #2563eb; }
 
+/* --- RESPONSIVE MEDIA QUERIES --- */
+
+/* Tablet breakpoint */
+@media (max-width: 1024px) {
+  .ideas-list { grid-template-columns: repeat(2, 1fr); }
+  .filters { padding: 16px 32px; }
+  .header { padding: 32px 32px 24px; }
+}
+
+/* Mobile breakpoint */
 @media (max-width: 768px) {
+  .ideas-list { 
+    grid-template-columns: 1fr; /* Stack cards vertically */
+    padding: 16px; 
+  }
   .header { padding: 24px 20px 20px; }
-  .ideas-list { padding: 16px 16px; }
+  .header-left h1 { font-size: 24px; }
+  .header-stats { gap: 20px; }
+  
   .filters { padding: 14px 16px; }
-  .card-summary { grid-template-columns: 44px 1fr auto; }
-  .detail-inner { grid-template-columns: 1fr; }
-  .detail-col:first-child { border-right: none; border-bottom: 1px solid #f0ede8; }
-  .card-main { padding: 16px 18px; }
-  .card-title { font-size: 16px; }
-  .header-stats { gap: 20px; flex-wrap: wrap; }
+  
+  .detail-inner { grid-template-columns: 1fr; } /* Stack detail columns */
+  .detail-col { padding: 20px 16px; } /* Reduce padding for mobile */
+  .detail-col:first-child { 
+    border-right: none; 
+    border-bottom: 1px solid #f0ede8; 
+  }
+  
+  .card-main { padding: 12px 16px 20px; }
+  .card-title { font-size: 15px; }
+}
+
+/* Extra small screens (Phones) */
+@media (max-width: 480px) {
+  .metrics-row { grid-template-columns: 1fr; } /* Stack metric boxes */
+  .metric-box[style*="grid-column:span 2"] { grid-column: span 1 !important; }
 }
 </style>
 </head>
