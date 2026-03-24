@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EdTech Business Ideas — Full Repository</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #f5f4f0; color: #1a1a18; }
+
+.header { background: #fff; border-bottom: 1px solid #e8e6e0; padding: 40px 48px 32px; }
+.header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.header-left h1 { font-size: 28px; font-weight: 700; color: #111; letter-spacing: -0.02em; margin-bottom: 6px; }
+.header-left p { font-size: 15px; color: #777; line-height: 1.6; max-width: 560px; }
+.header-stats { display: flex; gap: 32px; margin-top: 28px; }
+.hstat { }
+.hstat-val { font-size: 26px; font-weight: 700; color: #2563eb; letter-spacing: -0.02em; }
+.hstat-lbl { font-size: 12px; color: #999; font-weight: 500; margin-top: 2px; }
+
+.filters { display: flex; gap: 8px; padding: 20px 48px; background: #f5f4f0; flex-wrap: wrap; border-bottom: 1px solid #e8e6e0; }
+.fbtn { padding: 7px 16px; border-radius: 20px; border: 1px solid #ddd; background: #fff; font-size: 13px; font-weight: 500; cursor: pointer; color: #555; transition: all 0.15s; }
+.fbtn:hover { border-color: #2563eb; color: #2563eb; }
+.fbtn.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+
+.ideas-list {
+  padding: 24px 32px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.idea-card {
+  background: #fff;
+  border: 1px solid #e8e6e0;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.idea-card:hover { border-color: #93c5fd; box-shadow: 0 4px 20px rgba(37,99,235,0.08); }
+.idea-card.open { grid-column: 1 / -1; border-color: #2563eb; }
+
+.card-summary { display: flex; flex-direction: column; padding: 0; }
+
+.card-num-col {
+  padding: 14px 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-right: none;
+  align-self: unset;
+}
+.card-num { font-size: 10px; font-weight: 700; color: #ccc; letter-spacing: 0.08em; }
+
+.card-main { padding: 8px 16px 16px; }
+.card-title-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.card-title { font-size: 13.5px; font-weight: 700; color: #111; letter-spacing: -0.01em; line-height: 1.35; }
+.growth-badge { flex-shrink: 0; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; margin-top: 2px; }
+.g-vh { background: #ecfdf5; color: #065f46; }
+.g-h  { background: #f0fdf4; color: #166534; }
+
+.card-problem { font-size: 12px; color: #888; line-height: 1.55; margin-bottom: 10px; font-style: italic; }
+
+.card-quick-meta { display: flex; flex-direction: column; gap: 5px; border-top: 1px solid #f3f2ef; padding-top: 10px; }
+.qm { display: flex; align-items: center; justify-content: space-between; }
+.qm-label { font-size: 10px; color: #bbb; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; }
+.qm-val { font-size: 12px; color: #333; font-weight: 600; text-align: right; max-width: 160px; }
+.diff-badge { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px; }
+.d-easy { background: #eff6ff; color: #1d4ed8; }
+.d-med  { background: #fffbeb; color: #b45309; }
+.d-hard { background: #fff7ed; color: #c2410c; }
+
+.card-toggle-col { display: none; }
+.toggle-icon { font-size: 14px; color: #bbb; transition: transform 0.2s; }
+.idea-card.open .toggle-icon { transform: rotate(180deg); color: #2563eb; }
+
+/* Expanded detail */
+.card-detail {
+  display: none;
+  border-top: 1px solid #f0ede8;
+}
+.idea-card.open .card-detail { display: block; }
+
+.detail-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+
+.detail-col { padding: 28px 32px; }
+.detail-col:first-child { border-right: 1px solid #f0ede8; }
+
+.detail-section { margin-bottom: 24px; }
+.detail-section:last-child { margin-bottom: 0; }
+.dsec-title { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #aaa; margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
+.dsec-icon { width: 20px; height: 20px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; }
+.icon-prob { background: #fef3c7; }
+.icon-opp  { background: #dcfce7; }
+.icon-sol  { background: #dbeafe; }
+.icon-rev  { background: #f3e8ff; }
+.icon-comm { background: #fee2e2; }
+
+.dsec-body { font-size: 14px; color: #444; line-height: 1.7; }
+.dsec-body strong { color: #111; font-weight: 600; }
+
+.comm-list { display: flex; flex-direction: column; gap: 8px; }
+.comm-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; background: #f8f8f6; border-radius: 8px; border: 1px solid #eee; text-decoration: none; transition: background 0.15s; }
+.comm-item:hover { background: #f0ede8; }
+.comm-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+.cd-r { background: #ff4500; }
+.cd-q { background: #b92b27; }
+.cd-l { background: #0a66c2; }
+.comm-info { }
+.comm-platform { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 2px; }
+.cp-r { color: #c2410c; }
+.cp-q { color: #991b1b; }
+.cp-l { color: #1d4ed8; }
+.comm-title-text { font-size: 13px; color: #333; line-height: 1.45; }
+.comm-meta { font-size: 11px; color: #aaa; margin-top: 2px; }
+
+.metrics-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.metric-box { background: #f8f8f6; border-radius: 10px; padding: 14px 16px; border: 1px solid #eee; }
+.metric-lbl { font-size: 10px; font-weight: 700; color: #aaa; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; }
+.metric-val { font-size: 14px; font-weight: 700; color: #111; }
+.metric-val.green { color: #059669; }
+.metric-val.blue  { color: #2563eb; }
+
+@media (max-width: 768px) {
+  .header { padding: 24px 20px 20px; }
+  .ideas-list { padding: 16px 16px; }
+  .filters { padding: 14px 16px; }
+  .card-summary { grid-template-columns: 44px 1fr auto; }
+  .detail-inner { grid-template-columns: 1fr; }
+  .detail-col:first-child { border-right: none; border-bottom: 1px solid #f0ede8; }
+  .card-main { padding: 16px 18px; }
+  .card-title { font-size: 16px; }
+  .header-stats { gap: 20px; flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="header-left">
+      <h1>EdTech Business Ideas Repository</h1>
+      <p>10 deeply researched opportunities in Education & Technology — each with the problem, market opportunity, solution, revenue model and community-validated demand.</p>
+    </div>
+  </div>
+  <div class="header-stats">
+    <div class="hstat"><div class="hstat-val">10</div><div class="hstat-lbl">Ideas</div></div>
+    <div class="hstat"><div class="hstat-val">6</div><div class="hstat-lbl">Very high growth</div></div>
+    <div class="hstat"><div class="hstat-val">$2k</div><div class="hstat-lbl">Min. startup cost</div></div>
+    <div class="hstat"><div class="hstat-val">30+</div><div class="hstat-lbl">Community signals</div></div>
+  </div>
+</div>
+
+<div class="filters">
+  <button class="fbtn active" onclick="filter('all',this)">All ideas</button>
+  <button class="fbtn" onclick="filter('vh',this)">Very high growth</button>
+  <button class="fbtn" onclick="filter('easy',this)">Easy to start</button>
+  <button class="fbtn" onclick="filter('low',this)">Under $20k</button>
+</div>
+
+<div class="ideas-list" id="list"></div>
+
+<script>
+const ideas = [
+  {
+    id: 1,
+    num: "01",
+    title: "AI-powered personalised tutoring platform",
+    growth: "vh", growthLabel: "Very high growth",
+    difficulty: "hard", diffLabel: "Advanced",
+    cost: "$15k – $80k",
+    costRaw: 15,
+    revenue: "Student subscriptions + school licensing",
+    tagline: "Every student learns differently. No school has the budget to accommodate that. AI does.",
+    problem: "<strong>The problem:</strong> A classroom of 40 students moves at one pace — the average. High achievers are bored, struggling students fall behind, and teachers are too stretched to personalise. Private tutors cost $30–100/hour, pricing out most families entirely.",
+    opportunity: "<strong>$400B+</strong> global EdTech market by 2026. AI tutoring alone is projected at <strong>$47B by 2030</strong>. Less than 5% of students globally have access to quality personalised learning today.",
+    solution: "An adaptive learning engine powered by LLMs that adjusts curriculum pace, content difficulty and assessment style in real time based on each student's performance. Think Khan Academy meets a personal tutor — available 24/7, at $10/month.",
+    discussions: [
+      { platform: "reddit", platformClass: "cp-r", dotClass: "cd-r", title: "AI tutoring startups are finally getting real — here's what the landscape looks like", meta: "r/edtech · 1.4k upvotes", url: "https://reddit.com/r/edtech" },
+      { platform: "quora", platformClass: "cp-q", dotClass: "cd-q", title: "Can AI tutoring replace human teachers for personalised learning?", meta: "2.3k followers on question", url: "https://quora.com/topic/EdTech" },
+      { platform: "linkedin", platformClass: "cp-l", dotClass: "cd-l", title: "Why personalised AI tutoring is the most fundable EdTech category right now", meta: "Shared by 980 professionals", url: "https://linkedin.com/feed/hashtag/edtech" }
+    ]
+  },
+  {
+    id: 2,
+    num: "02",
+    title: "Micro-credential & skill badge marketplace",
+    growth: "vh", growthLabel: "Very high growth",
+    difficulty: "med", diffLabel: "Medium",
+    cost: "$8k – $40k",
+    costRaw: 8,
+    revenue: "Learner course fees + employer talent listings",
+    tagline: "A 4-year degree to prove you can use Excel is broken. Micro-credentials fix it.",
+    problem: "<strong>The problem:</strong> Employers need specific skills. Traditional degrees take 3–4 years and cost $30k+, and they don't prove job-readiness. Existing certifications (Google, AWS) are scattered across platforms with no unified credentialing standard employers actually trust.",
+    opportunity: "The global micro-credential market is growing at <strong>~52% CAGR</strong>. Over 87% of companies report skills gaps, and skills-based hiring rose 63% between 2022–2024. Employers are actively looking for verified, stackable proof of specific skills.",
+    solution: "A marketplace where learners complete focused 4–20 hour skill modules and receive blockchain-verified credentials — with employers posting which specific skills they need and paying to access verified talent. Revenue from both sides: learners pay per credential, employers pay to list and search.",
+    discussions: [
+      { platform: "reddit", platformClass: "cp-r", dotClass: "cd-r", title: "Are micro-credentials actually worth it? An honest breakdown from someone who tried 6", meta: "r/learnprogramming · 3.1k upvotes", url: "https://reddit.com/r/learnprogramming" },
+      { platform: "quora", platformClass: "cp-q", dotClass: "cd-q", title: "Will micro-credentials replace traditional degrees in the next decade?", meta: "5.6k followers on question", url: "https://quora.com/topic/Online-Education" },
+      { platform: "linkedin", platformClass: "cp-l", dotClass: "cd-l", title: "Skills-based hiring is rising — why micro-credentials are the future of talent acquisition", meta: "Trending in HR & L&D", url: "https://linkedin.com/feed/hashtag/microcredentials" }
+    ]
+  },
+  {
+    id: 3,
+    num: "03",
+    title: "B2B corporate learning management system",
+    growth: "h", growthLabel: "High growth",
+    difficulty: "hard", diffLabel: "Advanced",
+    cost: "$30k – $120k",
+    costRaw: 30,
+    revenue: "SaaS per-seat pricing + annual enterprise contracts",
+    tagline: "Corporate training is a $370B industry running on software built in 2005.",
+    problem: "<strong>The problem:</strong> Most enterprise LMS tools (SAP, Cornerstone, Moodle) are clunky, outdated and require IT teams to manage. HR managers spend weeks setting up training programmes that employees finish in 20 minutes and immediately forget. Completion rates average just 20–30%.",
+    opportunity: "The corporate LMS market is <strong>$18B and growing at 19% CAGR</strong>. Mid-market companies (200–2000 employees) are massively underserved — too large for simple tools, too small for expensive enterprise platforms. Average contract value: $25k–$150k/year.",
+    solution: "A modern, clean LMS with AI-curated content recommendations, skills gap analysis, compliance tracking and a manager dashboard — all deployable in a day with no IT involvement. Target HR and L&D teams directly. Land one team, expand company-wide.",
+    discussions: [
+      { platform: "reddit", platformClass: "cp-r", dotClass: "cd-r", title: "What LMS are you using for corporate training in 2024? Honest reviews only", meta: "r/instructionaldesign · 890 upvotes", url: "https://reddit.com/r/instructionaldesign" },
+      { platform: "quora", platformClass: "cp-q", dotClass: "cd-q", title: "What are the best LMS platforms for mid-size companies that aren't a nightmare to use?", meta: "1.8k followers on question", url: "https://quora.com/topic/LMS" },
+      { platform: "linkedin", platformClass: "cp-l", dotClass: "cd-l", title: "Corporate L&D budgets are up 23% — here's where the smart spend is going", meta: "Shared by 1.2k HR professionals", url: "https://linkedin.com/feed/hashtag/corporatelearning" }
+    ]
+  },
+  {
+    id: 4,
+    num: "04",
+    title: "EdTech for vernacular language learners",
+    growth: "vh", growthLabel: "Very high growth",
+    difficulty: "med", diffLabel: "Medium",
+    cost: "$5k – $25k",
+    costRaw: 5,
+    revenue: "Freemium subscriptions + state government contracts",
+    tagline: "800 million people in India alone can't access quality education because it's only in English.",
+    problem: "<strong>The problem:</strong> The majority of quality online education — courses, videos, assessments — is produced in English. Students in Tier 2/3 cities across India, Southeast Asia and Africa are effectively locked out of the EdTech boom because of the language barrier.",
+    opportunity: "India alone has <strong>600M+ non-English internet users</strong>, a number growing faster than English users. State governments are actively allocating budgets to digitise regional-language school content. First-movers in this space are seeing 3x user growth over English-first competitors.",
+    solution: "Build curriculum and vocational content in regional languages (Hindi, Tamil, Telugu, Bengali, Swahili etc.) — starting with one state, one language, one grade level. Partner with state education boards for distribution. Freemium for students, licensing revenue from governments and NGOs.",
+    discussions: [
+      { platform: "reddit", platformClass: "cp-r", dotClass: "cd-r", title: "Why vernacular EdTech is the most underrated startup opportunity in India right now", meta: "r/india · 2.7k upvotes", url: "https://reddit.com/r/india" },
+      { platform: "quora", platformClass: "cp-q", dotClass: "cd-q", title: "What EdTech startups are solving education in regional Indian languages?", meta: "3.4k followers on question", url: "https://quora.com/topic/Education-India" },
+      { platform: "linkedin", platformClass: "cp-l", dotClass: "cd-l", title: "Vernacular learning platforms are seeing 3x user growth vs English-only apps", meta: "Trending in EdTech India", url: "https://linkedin.com/feed/hashtag/vernacularedtech" }
+    ]
+  },
+  {
+    id: 5,
+    num: "05",
+    title: "Coding bootcamp for non-tech professionals",
+    growth: "h", growthLabel: "High growth",
+    difficulty: "easy", diffLabel: "Easy",
+    cost: "$3k – $15k",
+    costRaw: 3,
+    revenue: "Course tuition + employer placement fee share",
+    tagline: "Marketers, finance teams and operations managers all need to code now. Nobody is teaching them.",
+    problem: "<strong>The problem:</strong> Every business function now touches data, automation and AI tools. But most upskilling resources teach programming as if the goal is to become a software engineer — not a marketer who needs Python for campaign analytics or an ops manager who needs SQL for reporting.",
+    opportunity: "Over <strong>65% of non-tech professionals</strong> say they need data or automation skills but don't know where to learn them. The corporate upskilling market is $50B+ and growing. Companies pay $1,500–5,000 per employee for structured skills training.",
+    solution: "An 8-week cohort-based bootcamp teaching one practical skill stack (SQL + Excel automation, or Python for marketers, or no-code AI tools) — all framed around real job tasks, not computer science theory. Live sessions twice a week, real project portfolio at the end.",
+    discussions: [
+      { platform: "reddit", platformClass: "cp-r", dotClass: "cd-r", title: "Finished a SQL bootcamp as a marketer — here's what actually changed in my career", meta: "r/careerguidance · 4.5k upvotes", url: "https://reddit.com/r/careerguidance" },
+      { platform: "quora", platformClass: "cp-q", dotClass: "cd-q", title: "Is it worth learning Python if you work in finance and have no coding background?", meta: "7.1k followers on question", url: "https://quora.com/topic/Python" },
+      { platform: "linkedin", platformClass: "cp-l", dotClass: "cd-l", title: "Upskilling non-tech teams in data is the new competitive advantage every company is chasing", meta: "Shared by 2.1k professionals", url: "https://linkedin.com/feed/hashtag/upskilling" }
+    ]
+  },
+  {
+    id: 6,
+    num: "06",
+    title: "STEM toys & game-based learning kits",
+    growth: "h", growthLabel: "High growth",
+    difficulty: "hard", diffLabel: "Advanced",
+    cost: "$20k – $60k",
+    costRaw: 20,
+    revenue: "DTC product sales + monthly subscription box + school bulk orders",
+    tagline: "Parents spend $200 on Lego. They'd spend the same on something that actually teaches robotics.",
+    problem: "<strong>The problem:</strong> Most educational toys are either too boring (flashcards, workbooks) or too gamified with no real learning outcome. Parents want toys that genuinely build future-ready skills in their children — but the market is flooded with overpriced plastic with 'STEM' stickered on.",
+    opportunity: "The global STEM toy market is <strong>$3.4B growing at 12% CAGR</strong>. Parents aged 28–42 are the highest-spending demographic on children's education products. Gifting occasions (birthdays, holidays) drive massive seasonal spikes with organic word-of-mouth.",
+    solution: "A monthly subscription kit (physical components + companion app) teaching one STEM concept per month — robotics, electronics, chemistry, coding — with real working projects kids actually complete. Age-tiered for 6–8, 9–11, 12–14. School sales channel alongside DTC.",
+    discussions: [
+      { platform: "reddit", platformClass: "cp-r", dotClass: "cd-r", title: "Best STEM toys that actually teach real skills — parents share what worked", meta: "r/Parenting · 6.2k upvotes", url: "https://reddit.com/r/Parenting" },
+      { platform: "quora", platformClass: "cp-q", dotClass: "cd-q", title: "What are the best game-based learning tools for primary school children in 2024?", meta: "2.9k followers on question", url: "https://quora.com/topic/STEM-Education" },
+      { platform: "linkedin", platformClass: "cp-l", dotClass: "cd-l", title: "Game-based learning in schools is no longer optional — it's a curriculum imperative", meta: "Shared by 870 educators", url: "https://linkedin.com/feed/hashtag/STEMeducation" }
+    ]
+  },
+  {
+    id: 7,
+    num: "07",
+    title: "Student mental health & wellbeing platform",
+    growth: "vh", growthLabel: "Very high growth",
+    difficulty: "med", diffLabel: "Medium",
+    cost: "$10k – $45k",
+    costRaw: 10,
+    revenue: "University annual licensing + freemium student subscriptions",
+    tagline: "1 in 3 university students experiences a mental health crisis. Most colleges have a 6-week waiting list for counselling.",
+    problem: "<strong>The problem:</strong> Student mental health is at a global crisis point — anxiety and depression rates among 18–25 year olds have doubled since 2019. University counselling services are overwhelmed (average wait: 3–6 weeks). Existing mental health apps aren't built for the specific pressures of student life.",
+    opportunity: "Universities are <strong>actively allocating budget</strong> to student wellbeing solutions post-pandemic. The global digital mental health market is $17B growing at 16% CAGR. A single university with 20,000 students represents a $200k–$500k annual contract opportunity.",
+    solution: "A platform combining anonymous peer support communities, AI-powered mood tracking, therapist booking (within 48hrs, not 6 weeks), and university-branded wellness resources — licensed to universities at a per-student annual fee. Students access everything via one app.",
+    discussions: [
+      { platform: "reddit", platformClass: "cp-r", dotClass: "cd-r", title: "Universities are completely failing students on mental health — what can be done?", meta: "r/college · 8.3k upvotes", url: "https://reddit.com/r/college" },
+      { platform: "quora", platformClass: "cp-q", dotClass: "cd-q", title: "What are the best mental health apps specifically designed for university students?", meta: "4.1k followers on question", url: "https://quora.com/topic/Mental-Health" },
+      { platform: "linkedin", platformClass: "cp-l", dotClass: "cd-l", title: "Student mental health is the next frontier in EdTech — and it's still criminally underfunded", meta: "Trending in Higher Education", url: "https://linkedin.com/feed/hashtag/studentwellbeing" }
+    ]
+  },
+  {
+    id: 8,
+    num: "08",
+    title: "Teacher productivity & lesson-planning AI",
+    growth: "vh", growthLabel: "Very high growth",
+    difficulty: "easy", diffLabel: "Easy",
+    cost: "$5k – $20k",
+    costRaw: 5,
+    revenue: "SaaS per teacher / whole-school plans",
+    tagline: "Teachers spend 40% of their time on admin. That's time stolen from actual teaching.",
+    problem: "<strong>The problem:</strong> A typical teacher spends 10–15 hours per week writing lesson plans, creating assessments, differentiating worksheets for different ability levels, writing report card comments and drafting parent emails. That's nearly half their working week — on paperwork, not people.",
+    opportunity: "There are <strong>80 million teachers globally</strong>. If each saves just 5 hours/week, that's 400M hours recovered for education. Schools already budget for productivity tools. A per-teacher SaaS at $15/month across a 60-teacher school is a $10,800/year contract — easy to sell to a head teacher.",
+    solution: "An AI copilot that generates complete lesson plans from a topic + year group input, creates differentiated worksheets (easy/medium/hard), writes report card comments from teacher bullet notes, and drafts parent communication — all in under 2 minutes. Integrates with Google Classroom and Microsoft Teams.",
+    discussions: [
+      { platform: "reddit", platformClass: "cp-r", dotClass: "cd-r", title: "I tried 6 AI tools for lesson planning — here's the honest comparison teachers need to read", meta: "r/Teachers · 5.7k upvotes", url: "https://reddit.com/r/Teachers" },
+      { platform: "quora", platformClass: "cp-q", dotClass: "cd-q", title: "How are teachers actually using AI to reduce their workload in 2024?", meta: "3.8k followers on question", url: "https://quora.com/topic/Teaching" },
+      { platform: "linkedin", platformClass: "cp-l", dotClass: "cd-l", title: "AI for teachers isn't about replacing them — it's about giving them their time back", meta: "Shared by 3.4k educators", url: "https://linkedin.com/feed/hashtag/teachertools" }
+    ]
+  },
+  {
+    id: 9,
+    num: "09",
+    title: "Online exam preparation platform",
+    growth: "h", growthLabel: "High growth",
+    difficulty: "med", diffLabel: "Medium",
+    cost: "$8k – $35k",
+    costRaw: 8,
+    revenue: "Course bundles + live doubt-solving sessions",
+    tagline: "Millions of students preparing for high-stakes exams. Most are doing it with decade-old books and YouTube.",
+    problem: "<strong>The problem:</strong> Students preparing for competitive exams (GMAT, IELTS, CAT, UPSC, SAT, JEE) lack personalised preparation. They study the same material regardless of their weak areas, waste hours on topics they've already mastered, and have no real-time feedback on their progress until the actual exam.",
+    opportunity: "India alone has <strong>20M+ competitive exam aspirants</strong> annually. The exam prep market in India is $8B; globally it's $26B. Students show the highest willingness-to-pay in EdTech — they will spend $500–$2,000 on prep for an exam that determines their career.",
+    solution: "An AI-powered platform that identifies each student's weak areas through adaptive mock tests, serves targeted video lessons and practice questions for those specific gaps, tracks progress with a daily study plan, and offers live doubt-solving sessions with subject experts on demand.",
+    discussions: [
+      { platform: "reddit", platformClass: "cp-r", dotClass: "cd-r", title: "Best online resources for GMAT prep — the community verdict for 2024", meta: "r/GMAT · 3.9k upvotes", url: "https://reddit.com/r/GMAT" },
+      { platform: "quora", platformClass: "cp-q", dotClass: "cd-q", title: "Which online platform is most effective for UPSC preparation in 2024?", meta: "9.2k followers on question", url: "https://quora.com/topic/UPSC" },
+      { platform: "linkedin", platformClass: "cp-l", dotClass: "cd-l", title: "The exam prep market is a $26B opportunity — and it's still deeply fragmented", meta: "Shared by 1.1k professionals", url: "https://linkedin.com/feed/hashtag/examprep" }
+    ]
+  },
+  {
+    id: 10,
+    num: "10",
+    title: "Freelance skills accelerator for Gen Z",
+    growth: "vh", growthLabel: "Very high growth",
+    difficulty: "easy", diffLabel: "Easy",
+    cost: "$2k – $12k",
+    costRaw: 2,
+    revenue: "Cohort tuition fees + alumni community subscription",
+    tagline: "Gen Z doesn't want a job. They want income, flexibility and ownership. This builds all three.",
+    problem: "<strong>The problem:</strong> Millions of students and young adults want to earn online through freelancing but don't know which skills to learn, how to package them, or how to land their first client. Generic online courses give them theory with no practical outcome — they finish and still can't earn.",
+    opportunity: "The freelance economy is <strong>$1.5 trillion globally</strong> and Gen Z is its fastest-growing segment. 50% of Gen Z plans to freelance at some point in their career. Cohort-based courses have 80%+ completion rates vs. 5% for self-paced MOOCs — and command 10x higher price points.",
+    solution: "A 6-week cohort programme teaching one high-income freelance skill (copywriting, video editing, no-code development, social media management) — with live mentor sessions, peer accountability groups, a real client project in week 5, and portfolio-ready work by graduation. Alumni community subscription keeps the relationship alive post-cohort.",
+    discussions: [
+      { platform: "reddit", platformClass: "cp-r", dotClass: "cd-r", title: "How I made $3k/month freelancing after a 6-week online skills programme — full breakdown", meta: "r/freelance · 11.2k upvotes", url: "https://reddit.com/r/freelance" },
+      { platform: "quora", platformClass: "cp-q", dotClass: "cd-q", title: "What are the best online programmes for learning high-income freelance skills from scratch?", meta: "6.3k followers on question", url: "https://quora.com/topic/Freelancing" },
+      { platform: "linkedin", platformClass: "cp-l", dotClass: "cd-l", title: "Cohort-based learning is beating MOOCs on completion rates by 15x — here's exactly why", meta: "Shared by 2.8k professionals", url: "https://linkedin.com/feed/hashtag/cohortlearning" }
+    ]
+  }
+];
+
+function filter(type, btn) {
+  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderList(type);
+}
+
+function renderList(filterType) {
+  const list = document.getElementById('list');
+  list.innerHTML = '';
+  let filtered = ideas;
+  if (filterType === 'vh') filtered = ideas.filter(i => i.growth === 'vh');
+  if (filterType === 'easy') filtered = ideas.filter(i => i.difficulty === 'easy');
+  if (filterType === 'low') filtered = ideas.filter(i => i.costRaw <= 20);
+  filtered.forEach(idea => {
+    const card = document.createElement('div');
+    card.className = 'idea-card';
+    card.dataset.id = idea.id;
+    card.innerHTML = `
+      <div class="card-summary">
+        <div class="card-num-col">
+          <div class="card-num">${idea.num}</div>
+          <div class="toggle-icon">▾</div>
+        </div>
+        <div class="card-main">
+          <div class="card-title-row">
+            <div class="card-title">${idea.title}</div>
+            <span class="growth-badge g-${idea.growth}">${idea.growthLabel}</span>
+          </div>
+          <div class="card-problem">"${idea.tagline}"</div>
+          <div class="card-quick-meta">
+            <div class="qm"><span class="qm-label">Cost</span><span class="qm-val">${idea.cost}</span></div>
+            <div class="qm"><span class="qm-label">Difficulty</span><span class="diff-badge d-${idea.difficulty}">${idea.diffLabel}</span></div>
+            <div class="qm"><span class="qm-label">Revenue</span><span class="qm-val" style="font-size:11px;">${idea.revenue}</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-detail">
+        <div class="detail-inner">
+          <div class="detail-col">
+            <div class="detail-section">
+              <div class="dsec-title"><span class="dsec-icon icon-prob">⚠</span>The problem</div>
+              <div class="dsec-body">${idea.problem}</div>
+            </div>
+            <div class="detail-section">
+              <div class="dsec-title"><span class="dsec-icon icon-opp">📈</span>The opportunity</div>
+              <div class="dsec-body">${idea.opportunity}</div>
+            </div>
+            <div class="detail-section">
+              <div class="dsec-title"><span class="dsec-icon icon-sol">💡</span>The solution</div>
+              <div class="dsec-body">${idea.solution}</div>
+            </div>
+            <div class="detail-section">
+              <div class="dsec-title"><span class="dsec-icon icon-rev">💰</span>Metrics at a glance</div>
+              <div class="metrics-row">
+                <div class="metric-box"><div class="metric-lbl">Startup cost</div><div class="metric-val blue">${idea.cost}</div></div>
+                <div class="metric-box"><div class="metric-lbl">Difficulty</div><div class="metric-val">${idea.diffLabel}</div></div>
+                <div class="metric-box" style="grid-column:span 2"><div class="metric-lbl">Revenue model</div><div class="metric-val green" style="font-size:13px;">${idea.revenue}</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="detail-col">
+            <div class="detail-section">
+              <div class="dsec-title"><span class="dsec-icon icon-comm">🔴</span>Community demand signals</div>
+              <div class="comm-list">
+                ${idea.discussions.map(d => `
+                  <a class="comm-item" href="${d.url}" target="_blank" rel="noopener">
+                    <span class="comm-dot ${d.dotClass}"></span>
+                    <div class="comm-info">
+                      <div class="comm-platform ${d.platformClass}">${d.platform}</div>
+                      <div class="comm-title-text">${d.title}</div>
+                      <div class="comm-meta">${d.meta}</div>
+                    </div>
+                  </a>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    card.querySelector('.card-summary').addEventListener('click', () => {
+      card.classList.toggle('open');
+    });
+    list.appendChild(card);
+  });
+}
+
+renderList('all');
+</script>
+</body>
+</html>
